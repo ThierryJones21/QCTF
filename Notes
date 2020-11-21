@@ -1,0 +1,209 @@
+#include <string.h>
+#include <time.h>
+#include <vector>
+#include <algorithm>
+#include <set>
+#include <cstdlib>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <stdio.h>
+using namespace std;
+
+int main() {
+	ifstream fileIn("words.txt");
+	vector<string> contents;
+	vector<string> contentsCheck;
+	vector<string> contentsAcross; 
+	vector<string> contentsSonic;
+
+	vector<string> contents13;
+	vector<string> contents8;
+	vector<string> contents9;
+
+	vector<string> contentsS;
+	vector<string> contentsT;
+	vector<string> contentsG;
+
+	string line;
+	//first word accross
+	char checkWord = 'a';
+
+	char someChar1 = 't';
+	char someChar2 = 'i';
+	//Vertical words
+	char someChar3 = 'r';
+	
+	char someChar4 = 't';
+	
+	char someChar5 = 's';
+	char someChar6 = 'e';
+	
+	char someChar7 = 'g';
+
+	
+
+	stringstream SS;
+	while (getline(fileIn, line)) {
+		SS.clear();
+		SS.str(" ");
+		SS << line;
+		while (SS >> line) {
+			if (line.length() == 13) {
+				if (line[3] == someChar1) {//ti
+					if (line[6] == someChar2)
+						contents.push_back(line);
+				}
+			}
+			if (line.length() == 8) {
+				if (line[6] == someChar5) {//se
+					if (line[7] == someChar6)
+						contents.push_back(line);
+				}
+			}
+			if (line.length() == 9) {
+				if (line[2] == someChar3) {//r
+					contents.push_back(line);
+				}
+				if (line[1] == checkWord) {//a
+					contents.push_back(line);
+				}
+			}
+			if (line.length() == 5) {
+											//s
+					contents.push_back(line);
+				
+			}
+			if (line.length() == 10) {//Across
+					contents.push_back(line);
+			}
+			if (line.length() == 7) {
+				if (line[6] == someChar7) {//g
+					contents.push_back(line);
+				}
+				if (line[6] == someChar4) {//t
+					contents.push_back(line);
+				}
+			}
+		}
+	}
+
+	fileIn.close();
+	/*
+	for (int i = 0; i < contents.size(); i++) {
+		cout << contents[i] << endl;
+	}
+	*/
+	cout << "\n\n\n" << endl;
+
+	for (int i = 0; i < contents.size(); i++) {
+		string append;
+		if (contents[i].length() == 8) {//se
+			append = contents[i];
+			contents8.push_back(append);
+		}
+		if (contents[i].length() == 9) {//r
+			append = contents[i];
+			if (append[2] == someChar3) {
+				contents9.push_back(append);
+			}
+			if (append[1] == checkWord) {
+				contentsCheck.push_back(append);
+			}
+		}
+		if (contents[i].length() == 13) {//ti
+			append = contents[i];
+			contents13.push_back(append);
+		}
+		if (contents[i].length() == 5) {//s
+			append = contents[i];
+			if (append[0] == someChar5) {
+				contentsS.push_back(append);
+			}
+			if (append[2] == someChar5) {
+				contentsSonic.push_back(append);
+			}
+		}
+		if (contents[i].length() == 10) {//mystery word
+			append = contents[i];
+			contentsAcross.push_back(append);
+		}
+		if (contents[i].length() == 7) {//se
+			append = contents[i];
+			if (append[6] == someChar4) {
+				contentsT.push_back(append);
+			}
+			if (append[6] == someChar7) {
+				contentsG.push_back(append);
+			}
+		}
+	}
+
+	for (int i = 0; i < contentsCheck.size(); i++) {
+		cout << contentsCheck[i] << endl;
+	}
+
+	for (int i = 0; i < contentsAcross.size(); i++) {
+		cout << contentsAcross[i] << endl;
+	}
+
+	for (int i = 0; i < contentsSonic.size(); i++) {
+		cout << contentsSonic[i] << endl;
+	}
+	
+
+	for (int o = 0; o < contentsSonic.size() - 1; o++) {
+		string sonic;
+		sonic = contentsSonic[o];
+		for (int i = 0; i < contents13.size() - 1; i++) {
+			string temp1;
+			temp1 = contents13[i];
+			for (int g = 0; g < contentsS.size() - 1; g++) {
+				string temp4;
+				temp4 = contentsS[g];
+				if ((temp1[0] == temp4[4]) && (sonic[0] == temp4[1])) {//s overlap
+					for (int u = 0; u < contentsCheck.size() - 1; u++) {//top of crossword
+						string check;
+						check = contentsCheck[u];
+						for (int f = 0; f < contentsAcross.size() - 1; f++) {
+							string firstAcross;
+							firstAcross = contentsAcross[f];
+							for (int j = 0; j < contents8.size() - 1; j++) {
+								string temp2;
+								temp2 = contents8[j];
+								if ((temp1[4] == temp2[5]) && (temp2[0] == check[0]) && (temp2[3] == firstAcross[0]) && (sonic[0] == temp2[2])) {//check left side of cross word
+									for (int h = 0; h < contents9.size() - 1; h++) {
+										string temp3;
+										temp3 = contents9[h];
+										if ((temp1[7] == temp3[5]) && (temp3[0] == check[3]) && (temp3[3] == firstAcross[3])) {
+											for (int x = 0; x < contentsT.size() - 1; x++) {
+												string temp5;
+												temp5 = contentsT[x];
+												if (temp1[10] == temp5[5] && (temp5[0] == check[6]) && (temp5[3] == firstAcross[6])) {
+													for (int y = 0; y < contentsG.size() - 1; y++) {
+														string temp6;
+														temp6 = contentsG[y];
+														if (temp1[12] == temp6[5] && (temp6[0] == check[8]) && (temp6[3] == firstAcross[8])) {
+															std::cout << "match: " << temp1 << "+" << temp2 << "+" << temp3 << "+" << temp4 << "+" << temp5 << "+" << temp6 << "+" << check << "+" << firstAcross << "\n";
+
+														}
+													}
+												}
+											}
+
+
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+}
